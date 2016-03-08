@@ -75,8 +75,6 @@ gulp.task('testServerJSWithCoverage', function (done) {
         });
 });
 
-gulp.task('travis', ['lintJS', 'buildJS', 'buildCSS', 'testServerJSWithCoverage', 'end']);
-
 gulp.task('testBrowserJS', function (done) {
     karma.start({
         configFile: __dirname + '/tests/browser/karma.conf.js',
@@ -130,6 +128,13 @@ gulp.task('build', function () {
         runSeq(['buildJS', 'buildCSS']);
     }
 });
+
+gulp.task('end', ['testServerJSWithCoverage'], function() {
+    process.exit(0);
+});
+
+gulp.task('travis', ['lintJS', 'buildJS', 'buildCSS', 'testServerJSWithCoverage', 'end']);
+
 
 gulp.task('default', function () {
 
