@@ -1,11 +1,14 @@
 'use strict';
 window.app = angular.module('Wordly', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate']);
 
-app.config(function ($urlRouterProvider, $locationProvider) {
+app.config(function ($urlRouterProvider, $locationProvider, $httpProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
     $urlRouterProvider.otherwise('/');
+
+    //enable CORS for merriam webster api
+    $httpProvider.defaults.useXDomain = true;
 });
 
 // This app.run is for controlling access to specific states.
