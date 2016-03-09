@@ -129,6 +129,13 @@ gulp.task('build', function () {
     }
 });
 
+gulp.task('end', ['testServerJSWithCoverage'], function() {
+    process.exit(0);
+});
+
+gulp.task('travis', ['lintJS', 'buildJS', 'buildCSS', 'testServerJSWithCoverage', 'end']);
+
+
 gulp.task('default', function () {
 
     gulp.start('build');
