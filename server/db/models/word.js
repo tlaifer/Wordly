@@ -18,3 +18,5 @@ var schema = new mongoose.Schema({
 		type: String
 	}
 });
+
+mongoose.model('Word', schema);
