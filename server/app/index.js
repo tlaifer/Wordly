@@ -2,6 +2,8 @@
 var path = require('path');
 var express = require('express');
 var app = express();
+var cors = require('cors');
+
 module.exports = app;
 
 // Pass our express application pipeline into the configuration
@@ -12,6 +14,8 @@ require('./configure')(app);
 // /api so they are isolated from our GET /* wildcard.
 app.use('/api', require('./routes'));
 
+//enable cors
+app.use(cors());
 
 /*
  This middleware will catch any URLs resembling a file extension
@@ -43,23 +47,7 @@ app.use(function (err, req, res, next) {
 
 //middleware for enabling cross domain requests for the dictionary api
 app.use(function(req, res, next) {
-	let responseSettings = {
-	       "AccessControlAllowOrigin": req.headers.origin,
-	       "AccessControlAllowHeaders": "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name",
-	       "AccessControlAllowMethods": "POST, GET, PUT, DELETE, OPTIONS",
-	       "AccessControlAllowCredentials": true
-	   };
-
-	res.header("Access-Control-Allow-Credentials", responseSettings.AccessControlAllowCredentials);
-    res.header("Access-Control-Allow-Origin",  responseSettings.AccessControlAllowOrigin);
-    res.header("Access-Control-Allow-Headers", (req.headers['access-control-request-headers']) ? req.headers['access-control-request-headers'] : "x-requested-with");
-    res.header("Access-Control-Allow-Methods", (req.headers['access-control-request-method']) ? req.headers['access-control-request-method'] : responseSettings.AccessControlAllowMethods);
-
-
-   if ('OPTIONS' == req.method) {
-           res.send(200);
-       }
-       else {
-           next();
-       }
-})
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
