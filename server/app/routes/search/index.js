@@ -14,9 +14,9 @@ router.route('/:word')
 		console.log('getting here');
 		console.log('path: ', path);
 	 		return request.get(path)
-			.then((response) => {
-				console.log('response: ', response);
-				res.status(200).send(response);
+			.then((word) => {
+				console.log('response: ', word);
+				res.status(200).send(word);
 			})
 			.then(null, next);
 	})
