@@ -2,11 +2,24 @@
 var path = require('path');
 var express = require('express');
 var app = express();
+var cors = require('cors');
 module.exports = app;
 
 // Pass our express application pipeline into the configuration
 // function located at server/app/configure/index.js
 require('./configure')(app);
+
+//middleware for enabling cross domain requests for the dictionary api
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+
+//enable cors
+// app.use(cors());
+
 
 // Routes that will be accessed via AJAX should be prepended with
 // /api so they are isolated from our GET /* wildcard.
@@ -39,27 +52,3 @@ app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
-
-
-//middleware for enabling cross domain requests for the dictionary api
-app.use(function(req, res, next) {
-	let responseSettings = {
-	       "AccessControlAllowOrigin": req.headers.origin,
-	       "AccessControlAllowHeaders": "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name",
-	       "AccessControlAllowMethods": "POST, GET, PUT, DELETE, OPTIONS",
-	       "AccessControlAllowCredentials": true
-	   };
-
-	res.header("Access-Control-Allow-Credentials", responseSettings.AccessControlAllowCredentials);
-    res.header("Access-Control-Allow-Origin",  responseSettings.AccessControlAllowOrigin);
-    res.header("Access-Control-Allow-Headers", (req.headers['access-control-request-headers']) ? req.headers['access-control-request-headers'] : "x-requested-with");
-    res.header("Access-Control-Allow-Methods", (req.headers['access-control-request-method']) ? req.headers['access-control-request-method'] : responseSettings.AccessControlAllowMethods);
-
-
-   if ('OPTIONS' == req.method) {
-           res.send(200);
-       }
-       else {
-           next();
-       }
-})
