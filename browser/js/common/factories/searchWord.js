@@ -19,7 +19,7 @@ app.factory('addWordFactory', $http => {
 	factory.searchMerriamWebsterBackend = (word) => {
 		return $http({
 			method: 'GET',
-			url: '/search/' + word,
+			url: 'api/search/' + word,
 		})
 		.then(response => {
 			console.log('in the promise', response);
