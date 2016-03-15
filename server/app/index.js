@@ -10,6 +10,14 @@ module.exports = app;
 // function located at server/app/configure/index.js
 require('./configure')(app);
 
+//middleware for enabling cross domain requests for the dictionary api
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
 // Routes that will be accessed via AJAX should be prepended with
 // /api so they are isolated from our GET /* wildcard.
 app.use('/api', require('./routes'));
@@ -42,12 +50,4 @@ app.use(function (err, req, res, next) {
     console.error(err)
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error.');
-});
-
-
-//middleware for enabling cross domain requests for the dictionary api
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
 });
