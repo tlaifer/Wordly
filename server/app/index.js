@@ -3,7 +3,6 @@ var path = require('path');
 var express = require('express');
 var app = express();
 var cors = require('cors');
-
 module.exports = app;
 
 // Pass our express application pipeline into the configuration
@@ -11,19 +10,21 @@ module.exports = app;
 require('./configure')(app);
 
 //middleware for enabling cross domain requests for the dictionary api
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+
+//enable cors
+// app.use(cors());
 
 
 // Routes that will be accessed via AJAX should be prepended with
 // /api so they are isolated from our GET /* wildcard.
 app.use('/api', require('./routes'));
 
-//enable cors
-app.use(cors());
 
 /*
  This middleware will catch any URLs resembling a file extension
