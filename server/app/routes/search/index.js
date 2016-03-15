@@ -9,19 +9,12 @@ router.route('/:word')
 		let key = "94625c95-0669-4898-baf1-d40c675610d7";
 		let word = req.params.word;
 		let path = domain + word + '?key=' + key;
-		console.log('getting here');
-		console.log('path: ', path);
-	 		return request.get(path, (error, response, body) => {
-	 			console.log('calling callback', body);
-	 			if (!error && response.statusCode === 200) {
-	 				res.status(200).send(body);
-	 			}
-	 		})
-			// .then((word) => {
-			// 	console.log('response: ', word);
-			// 	res.status(200).send(word);
-			// })
-			
+		//api request to merriam webster
+ 		return request.get(path, (error, response, body) => {
+ 			if (!error && response.statusCode === 200) {
+ 				res.status(200).send(body);
+ 			}
+ 		})
 	})
 
 	
