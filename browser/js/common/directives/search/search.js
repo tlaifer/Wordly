@@ -3,7 +3,8 @@ app.directive('searchbar', (addWordFactory) => {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/search/search.html',
 		link: (scope) => {
-			scope.search = addWordFactory.searchMerriamWebsterBackend;
+			scope.searchDict = addWordFactory.searchDictionary;
+			scope.searchThesauraus = addWordFactory.searchThesaurus;
 			scope.searchInput = '';
 		}
 	}
