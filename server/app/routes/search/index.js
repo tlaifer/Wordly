@@ -3,6 +3,8 @@ let router = require('express').Router();
 let request = require('request');
 module.exports = router;
 
+console.log('key');
+
 router.route('/:word')
 	.get((req, res, next) => {
 		let domain = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/';
