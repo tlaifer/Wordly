@@ -6,20 +6,20 @@ app.directive('searchbar', (addWordFactory) => {
 			scope.wordData;
 
 			scope.searchDict = (word) => {
-				return scope.wordData = angular.fromJson(scope.dummyDict);
+				// return scope.wordData = angular.fromJson(scope.dummyDict);
 
-				// return addWordFactory.searchDictionary(word)
-				// 		.then(data => {
-				// 			scope.wordData = data;
-				// 		})
+				return addWordFactory.searchDictionary(word)
+						.then(data => {
+							scope.wordData = data;
+						})
 			};
 			scope.searchThesaurus = (word) => {
-				return scope.wordData = angular.fromJson(scope.dummyThes);
+				// return scope.wordData = angular.fromJson(scope.dummyThes);
 				
-				// return addWordFactory.searchThesaurus(word)
-				// 		.then(data => {
-				// 			scope.wordData = data;
-				// 		})
+				return addWordFactory.searchThesaurus(word)
+						.then(data => {
+							scope.wordData = data;
+						})
 			};
 			scope.searchInput = '';
 
