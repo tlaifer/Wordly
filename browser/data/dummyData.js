@@ -12,7 +12,7 @@ function dataParse (data, word) {
 	newWord.word = data.ew[0];
 	newWord.partSpeech = data.fl[0];
 	newWord.date = data.def[0].date[0];
-	newWord.def = data.def[0].dt
+	newWord.definitions = data.def[0].dt
 	newWord.pronunciation = data.pr;
 	newWord.guide = data.def[0].sn;
 	return newWord;
@@ -49,6 +49,44 @@ console.log('parse test: ', entryParser(dummyWord, 'hello'));
 console.log('complex test: ', entryParser(toTest, 'hit'));
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
+
+
+function WordOutline (guideArr) {
+	var outline = {};
+	var numbers = '0123456789';
+	var definitionNum = 1;
+
+	for (var i = 0; i < guideArr.length; i++) {
+		//create new SubDefinition object
+		if (guideArr[i].length > 1) {
+			outline["Definition" + definitionNum] = {};
+			var go = true;
+			for (var j = i; j < guideArr.length; j++) {
+				if (j !== i && guideArr[j].length > 1) go = false;
+				//letter tracker 
+				if (i === j) {
+					outline['Definition' + definitionNum]['a'] = 'Def A';
+				}
+				// push all subdefinitions to outline
+				else if (guideArr[j].length === 1 && go && numbers.indexOf(guideArr[j] === -1)) {
+					outline['Definition' + definitionNum][guideArr[j]] = 'Def ' + guideArr[j];
+				}
+			}
+			definitionNum++;
+		}
+		else if (guideArr[i].length === 1) {
+			outline['Definition' + definitionNum] = 'Single Def ' + definitionNum;
+			definitionNum++;
+		}
+	}
+	return outline;
+}
+
+console.log('outline maker: ', WordOutline(wordRef));
+
+function SubDefinition (defObj) {
+	this.definition = defObj;
+}
 
 
 
