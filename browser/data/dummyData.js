@@ -45,47 +45,68 @@ var hello = dataParse(dummyEntry);
 // var helloData = new Word(hello);
 // console.log('hello: ', helloData);
 
-console.log('parse test: ', entryParser(dummyWord, 'hello'));
-console.log('complex test: ', entryParser(toTest, 'hit'));
+// console.log('parse test: ', entryParser(dummyWord, 'hello'));
+// console.log('complex test: ', entryParser(toTest, 'hit'));
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
-
-function WordOutline (guideArr) {
+function WordOutline (guide) {
 	var outline = {};
-	var numbers = '0123456789';
-	var definitionNum = 1;
+	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-	for (var i = 0; i < guideArr.length; i++) {
-		//create new SubDefinition object
-		if (guideArr[i].length > 1) {
-			outline["Definition" + definitionNum] = {};
+	for (var i = 0; i < guide.length; i++) {
+		// check if definition has multiple subdefinitions
+		if (guide[i].length > 1) {
+			//create new array within the outline to hold subdefitions a, b, c....
+			var subDef = guide[i].split(' ');
+			var keyReference;
+
+			if (!outline[subDef[0]]) {
+				keyRef = subDef[0];
+				
+			}
+			else {
+				keyRef = subDef[0] + '.1';
+			}
+			
+			outline[keyRef] = [];
+			outline[keyRef].push(subDef[1]);
+
+			//loop to push all subefinitions to this array
 			var go = true;
-			for (var j = i; j < guideArr.length; j++) {
-				if (j !== i && guideArr[j].length > 1) go = false;
-				//letter tracker 
-				if (i === j) {
-					outline['Definition' + definitionNum]['a'] = 'Def A';
-				}
-				// push all subdefinitions to outline
-				else if (guideArr[j].length === 1 && go && numbers.indexOf(guideArr[j] === -1)) {
-					outline['Definition' + definitionNum][guideArr[j]] = 'Def ' + guideArr[j];
+			for (var j = i + 1; j < guide.length; j++) {
+				if (go) {
+					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
+						outline[keyRef].push(guide[j]);
+					}
+
+					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
+						go = false;
+						i = j-1;
+					}
 				}
 			}
-			definitionNum++;
 		}
-		else if (guideArr[i].length === 1) {
-			outline['Definition' + definitionNum] = 'Single Def ' + definitionNum;
-			definitionNum++;
+		else if (guide[i].length === 1) {
+			var keyReference;
+
+			if (!outline[guide[i]]) {
+				keyRef = guide[i];
+				
+			}
+			else {
+				keyRef = guide[i] + '.1';
+			}
+
+			outline[keyRef] = 'Def ' + keyRef;
 		}
 	}
 	return outline;
 }
-
 console.log('outline maker: ', WordOutline(wordRef));
 
-function SubDefinition (defObj) {
-	this.definition = defObj;
+function SubDefinitionGuide () {
+	this.subDefinitions = ['a'];
 }
 
 
