@@ -98,7 +98,7 @@ function WordOutline (guide) {
 				keyRef = guide[i] + '.1';
 			}
 
-			outline[keyRef] = 'Definition ' + keyRef;
+			outline[keyRef] = 'Def ' + keyRef;
 		}
 	}
 	return outline;
