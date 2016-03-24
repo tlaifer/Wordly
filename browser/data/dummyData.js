@@ -50,35 +50,55 @@ var hello = dataParse(dummyEntry);
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
-function WordOutline (guideArr) {
+function WordOutline (guide) {
 	var outline = {};
 	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-	for (var i = 0; i < guideArr.length; i++) {
-		//create new SubDefinition object
-		if (guideArr[i].length > 1) {
+	for (var i = 0; i < guide.length; i++) {
+		// check if definition has multiple subdefinitions
+		if (guide[i].length > 1) {
 			//create new array within the outline to hold subdefitions a, b, c....
-			var subDef = guideArr[i].split(' ');
-			outline[subDef[0]] = [];
-			outline[subDef[0]].push(subDef[1]);
-			//while loop to push all subefinitions to this array
+			var subDef = guide[i].split(' ');
+			var keyReference;
+
+			if (!outline[subDef[0]]) {
+				keyRef = subDef[0];
+				
+			}
+			else {
+				keyRef = subDef[0] + '.1';
+			}
+			
+			outline[keyRef] = [];
+			outline[keyRef].push(subDef[1]);
+
+			//loop to push all subefinitions to this array
 			var go = true;
-			console.log('i is ', i);
-			for (var j = i + 1; j < guideArr.length; j++) {
+			for (var j = i + 1; j < guide.length; j++) {
 				if (go) {
-					if (guideArr[j].length === 1 && nums.indexOf(guideArr[j]) < 0) {
-						outline[subDef[0]].push(guideArr[j]);
+					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
+						outline[keyRef].push(guide[j]);
 					}
 
-					else if (guideArr[j].length !== 1 || nums.indexOf(guideArr[j]) > -1) {
+					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
 						go = false;
 						i = j-1;
 					}
 				}
 			}
 		}
-		else if (guideArr[i].length === 1) {
-			outline[guideArr[i]] = 'Definition ' + guideArr[i];
+		else if (guide[i].length === 1) {
+			var keyReference;
+
+			if (!outline[guide[i]]) {
+				keyRef = guide[i];
+				
+			}
+			else {
+				keyRef = guide[i] + '.1';
+			}
+
+			outline[keyRef] = 'Definition ' + keyRef;
 		}
 	}
 	return outline;
