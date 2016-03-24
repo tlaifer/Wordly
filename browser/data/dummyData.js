@@ -45,47 +45,48 @@ var hello = dataParse(dummyEntry);
 // var helloData = new Word(hello);
 // console.log('hello: ', helloData);
 
-console.log('parse test: ', entryParser(dummyWord, 'hello'));
-console.log('complex test: ', entryParser(toTest, 'hit'));
+// console.log('parse test: ', entryParser(dummyWord, 'hello'));
+// console.log('complex test: ', entryParser(toTest, 'hit'));
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
-
 function WordOutline (guideArr) {
 	var outline = {};
-	var numbers = '0123456789';
-	var definitionNum = 1;
+	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 	for (var i = 0; i < guideArr.length; i++) {
 		//create new SubDefinition object
 		if (guideArr[i].length > 1) {
-			outline["Definition" + definitionNum] = {};
+			//create new array within the outline to hold subdefitions a, b, c....
+			var subDef = guideArr[i].split(' ');
+			outline[subDef[0]] = [];
+			outline[subDef[0]].push(subDef[1]);
+			//while loop to push all subefinitions to this array
 			var go = true;
-			for (var j = i; j < guideArr.length; j++) {
-				if (j !== i && guideArr[j].length > 1) go = false;
-				//letter tracker 
-				if (i === j) {
-					outline['Definition' + definitionNum]['a'] = 'Def A';
-				}
-				// push all subdefinitions to outline
-				else if (guideArr[j].length === 1 && go && numbers.indexOf(guideArr[j] === -1)) {
-					outline['Definition' + definitionNum][guideArr[j]] = 'Def ' + guideArr[j];
+			console.log('i is ', i);
+			for (var j = i + 1; j < guideArr.length; j++) {
+				if (go) {
+					if (guideArr[j].length === 1 && nums.indexOf(guideArr[j]) < 0) {
+						outline[subDef[0]].push(guideArr[j]);
+					}
+
+					else if (guideArr[j].length !== 1 || nums.indexOf(guideArr[j]) > -1) {
+						go = false;
+						i = j-1;
+					}
 				}
 			}
-			definitionNum++;
 		}
 		else if (guideArr[i].length === 1) {
-			outline['Definition' + definitionNum] = 'Single Def ' + definitionNum;
-			definitionNum++;
+			outline[guideArr[i]] = 'Definition ' + guideArr[i];
 		}
 	}
 	return outline;
 }
-
 console.log('outline maker: ', WordOutline(wordRef));
 
-function SubDefinition (defObj) {
-	this.definition = defObj;
+function SubDefinitionGuide () {
+	this.subDefinitions = ['a'];
 }
 
 
