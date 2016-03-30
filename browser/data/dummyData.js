@@ -14,15 +14,9 @@ function dataParse (data, word) {
 	newWord.date = data.def[0].date[0];
 	newWord.definitions = data.def[0].dt
 	newWord.pronunciation = data.pr;
-	newWord.guide = data.def[0].sn;
+	newWord.guide = WordOutline(data.def[0].sn);
+	newWord.toSave = fullRender(newWord.guide, newWord.definitions);
 	return newWord;
-}
-
-function Word (wordOBJ) {
-	this.word = wordOBJ.word;
-	this.def = wordOBJ.def;
-	this.pronunciation = wordOBJ.pronunciation;
-	this.partSpeech = wordOBJ.partSpeech;
 }
 
 function entryParser (entry, word) {
@@ -36,17 +30,15 @@ function entryParser (entry, word) {
 	return result;
 }
 
-var dummyEntry = dummyDict.entry_list.entry[0];
-var dummyWord = dummyDict.entry_list.entry;
+function fullRender (guide, definitions) {
+
+}
+
 var toTest = complexDummy.entry_list.entry;
+var hit = entryParser(toTest, 'hit');
 
-var hello = dataParse(dummyEntry);
+console.log('testing hit output', hit);
 
-// var helloData = new Word(hello);
-// console.log('hello: ', helloData);
-
-// console.log('parse test: ', entryParser(dummyWord, 'hello'));
-// console.log('complex test: ', entryParser(toTest, 'hit'));
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
@@ -95,7 +87,10 @@ function WordOutline (guide) {
 				
 			}
 			else {
-				keyRef = guide[i] + '.1';
+			// temporarily disabled... if the for loop encounters a new definition altogether, simply return
+			//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
+				// keyRef = guide[i] + '.1';
+				return outline;
 			}
 
 			outline[keyRef] = 'Def ' + keyRef;
@@ -105,11 +100,21 @@ function WordOutline (guide) {
 }
 console.log('outline maker: ', WordOutline(wordRef));
 
-function SubDefinitionGuide () {
-	this.subDefinitions = ['a'];
-}
 
+// function Word (wordOBJ) {
+// 	this.word = wordOBJ.word;
+// 	this.def = wordOBJ.def;
+// 	this.pronunciation = wordOBJ.pronunciation;
+// 	this.partSpeech = wordOBJ.partSpeech;
+// }
 
+// var dummyEntry = dummyDict.entry_list.entry[0];
+// var dummyWord = dummyDict.entry_list.entry;
 
+// var hello = dataParse(dummyEntry);
 
+// var helloData = new Word(hello);
+// console.log('hello: ', helloData);
 
+// console.log('parse test: ', entryParser(dummyWord, 'hello'));
+// console.log('complex test: ', entryParser(toTest, 'hit'));
