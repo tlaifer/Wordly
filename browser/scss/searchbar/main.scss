@@ -1,0 +1,30 @@
+#searchbar
+
+#searchContainer {
+	max-width: 50%;
+	p {
+		font-size: 3vw;
+		font-family: 'Josefin Slab', serif;
+		color: #ffeecc;
+		font-weight: 300;
+	}
+
+	#inputBar {
+		max-width: 50%;
+		display: block;
+		margin: 4% 20%;
+		padding: 2% 5%;
+	}
+	button {
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 400;
+	}
+	#thes {
+		color: white;
+		background-color: #b3b3ff;
+	}
+	#dict {
+		color: white;
+		background-color: #b3b3ff;
+	}
+}
