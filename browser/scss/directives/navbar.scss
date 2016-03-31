@@ -11,12 +11,6 @@ navbar {
     padding-top: 20px;
   }
 
-  fullstack-logo {
-    margin-top: 5px;
-    margin-right: 20px;
-    width: 40px;
-  }
-
   a {
     color: black;
     font-size: 16px;
@@ -26,11 +20,11 @@ navbar {
     cursor: pointer;
     transition: color 0.2s;
     &.active {
-      color: darken(#f31214, 10%);
+      color: darken(#00b3b3, 10%);
     }
     &:hover {
       background: none;
-      color: #f31214;
+      color: #00b3b3;
     }
     &:focus {
       background: none;
@@ -54,7 +48,7 @@ navbar {
       margin-right: 5px;
     }
     a {
-      color: #f30046;
+      color: #00b3b3;
       cursor: pointer;
     }
   }
