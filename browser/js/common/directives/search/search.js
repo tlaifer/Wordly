@@ -36,10 +36,11 @@ app.config(($stateProvider) => {
 	$stateProvider.state('searchbar', {
 		url: '/search',
 		templateUrl: 'js/common/directives/search/search.html',
+		controller: 'SearchBarCtrl'
 
 	})
 })
-.controller('SearchBarCtrl', ($scope) => {
+.controller('SearchBarCtrl', ($scope, addWordFactory) => {
 	$scope.wordData;
 
 	$scope.searchDict = (word) => {

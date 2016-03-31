@@ -3,7 +3,7 @@
 }
 
 body {
-  background: #fdfdfd;
+  background: #00b3b3;
 }
 
 @mixin clearfix {
@@ -24,3 +24,4 @@ body {
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+@import 'searchbar/main'
