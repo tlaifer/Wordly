@@ -2,7 +2,7 @@ app.directive('oauth', () => {
 	return {
 		scope: {
 			serviceProvider: '@',
-			imageUrl: '@'
+			image: '@'
 		},
 		restrict: 'E',
 		templateUrl: 'js/common/directives/oAuth/oAuth.html'

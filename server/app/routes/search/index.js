@@ -8,6 +8,7 @@ let router = require('express').Router(),
 		},
 	dictPath = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/',
 	thesPath = 'http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/';
+	
 module.exports = router;
 
 router.route('/dictionary/:word')
