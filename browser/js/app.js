@@ -5,10 +5,11 @@ app.config(function ($urlRouterProvider, $locationProvider, $httpProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/search');
 
-    //enable CORS for merriam webster api
-    $httpProvider.defaults.useXDomain = true;
+    $urlRouterProvider.when('/auth/:serviceProvider', function(){
+        window.location.reload();
+    })
 });
 
 // This app.run is for controlling access to specific states.
@@ -45,7 +46,7 @@ app.run(function ($rootScope, AuthService, $state) {
             if (user) {
                 $state.go(toState.name, toParams);
             } else {
-                $state.go('login');
+                $state.go('home');
             }
         });
 
