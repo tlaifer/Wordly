@@ -2,10 +2,7 @@
 let router = require('express').Router(),
 	request = require('request'),
 	parseString = require('xml2js').parseString,
-	key = {
-		dictionary: '94625c95-0669-4898-baf1-d40c675610d7',
-		thesaurus: '286dae0c-3755-4623-ae2f-7d5e2e758677'
-		},
+	key = require('../../../../keys/dictionary_keys.js'),
 	dictPath = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/',
 	thesPath = 'http://www.dictionaryapi.com/api/v1/references/thesaurus/xml/';
 	
