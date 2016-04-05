@@ -15,7 +15,7 @@ function dataParse (data, word) {
 	newWord.definitions = data.def[0].dt
 	newWord.pronunciation = data.pr;
 	newWord.guide = WordOutline(data.def[0].sn);
-	newWord.toSave = fullRender(newWord.guide, newWord.definitions);
+	// newWord.toSave = fullRender(newWord.guide, newWord.definitions);
 	return newWord;
 }
 
@@ -30,14 +30,22 @@ function entryParser (entry, word) {
 	return result;
 }
 
-function fullRender (guide, definitions) {
-
+function getDefinitions (word, query) {
+	var definitionStrings = [];
+	// if (!query) return;
+	// else if (!query.def) return 'no defintions provided';
+	// else if (query.ew[0] !== word) return "word doesn't match";
+	query.forEach(function(entry) {
+		definitionStrings.push(entry.def[0].dt);
+	})
+	return definitionStrings;
 }
 
 var toTest = complexDummy.entry_list.entry;
 var hit = entryParser(toTest, 'hit');
 
-console.log('testing hit output', hit);
+// console.log('testing hit output', hit);
+console.log('testing definition func', getDefinitions('hit', complexDummy.entry_list.entry));
 
 
 var wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
@@ -98,7 +106,7 @@ function WordOutline (guide) {
 	}
 	return outline;
 }
-console.log('outline maker: ', WordOutline(wordRef));
+// console.log('outline maker: ', WordOutline(wordRef));
 
 
 // function Word (wordOBJ) {
