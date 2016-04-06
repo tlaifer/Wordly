@@ -19,7 +19,7 @@ router.route('/dictionary/:word')
  			if (!error && response.statusCode === 200) {
  				parseString(body, (err, result) => {
  					console.log('dictionary ', result);
- 					res.status(200).send(result);
+ 					res.status(200).json(result);
  				})
  			}
  		})
@@ -32,7 +32,7 @@ router.route('/thesaurus/:word')
 			if (!error && response.statusCode === 200) {
 				parseString(body, (err, result) => {
 					console.log('thesaurus ',  result);
-					res.status(200).send(result);
+					res.status(200).json(result);
 				})
 			}
 		})
