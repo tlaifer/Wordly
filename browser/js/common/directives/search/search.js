@@ -40,13 +40,16 @@ app.config(($stateProvider) => {
 
 	})
 })
-.controller('SearchBarCtrl', ($scope, addWordFactory) => {
+.controller('SearchBarCtrl', ($scope, addWordFactory, dataFactory) => {
 	$scope.wordData;
+	$scope.word;
 
 	$scope.searchDict = (word) => {
+		$scope.word = word;
 		return addWordFactory.searchDictionary(word)
 				.then(data => {
-					$scope.wordData = data;
+					$scope.wordData = dataFactory.wordParse(word, data);
+					$scope.word = '';
 				})
 	};
 
