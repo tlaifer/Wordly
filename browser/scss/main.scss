@@ -1,9 +1,11 @@
+@import 'variables/main';
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  background: #00b3b3;
+  background: $background-teal;
 }
 
 @mixin clearfix {
@@ -18,6 +20,17 @@ body {
   padding-top: 0px;
   margin: 0 auto;
 }
+
+.search-btn {
+  	color: white;
+	background-color: $btn-color;
+ }
+
+ .btn-default:hover {
+ 	color: lighten($btn-color, 10%);
+ 	background-color: darken($btn-color, 20%);
+ 	border-color: $dope-pink;
+ }
 
 @import 'directives/main';
 @import 'home/main';
