@@ -6,6 +6,7 @@
 
 body {
   background: $background-teal;
+  -webkit-animation: pulsate 25s infinite alternate;
 }
 
 @mixin clearfix {
@@ -30,6 +31,14 @@ body {
  	color: lighten($btn-color, 10%);
  	background-color: darken($btn-color, 20%);
  	border-color: $dope-pink;
+ }
+
+
+ @-webkit-keyframes pulsate {
+       0% {background-color: lighten($background-teal, 9%);}
+      33% {background-color: lighten($background-teal, 4%);}
+     66% {background-color: darken($background-teal, 1%);}
+     100% {background-color: darken($background-teal, 6%);}
  }
 
 @import 'directives/main';
