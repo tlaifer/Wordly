@@ -101,7 +101,7 @@ function WordOutline (guide) {
 				// return outline;
 			}
 
-			outline[keyRef] = 'Def ' + keyRef;
+			outline[keyRef] = keyRef;
 		}
 	}
 	return outline;
