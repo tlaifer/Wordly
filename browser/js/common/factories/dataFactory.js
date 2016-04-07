@@ -93,6 +93,8 @@ app.factory('dataFactory', () => {
 			wordObject = {},
 			definitions = [],
 			guides = [];
+		//temporary response, will build function to display search suggestions
+		if (toParse === undefined) return "That word doesn't seem to exist!";
 
 		toParse.forEach(function(entry) {
 			if (entry.ew[0] === word) {
