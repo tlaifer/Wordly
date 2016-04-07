@@ -90,21 +90,24 @@ app.factory('dataFactory', () => {
 	// returns an object containing defintions arrays and respective outlines for the definitions
 	factory.wordParse = (word, data) => {
 		var toParse = data.entry_list.entry,
-			wordObject = {},
-			definitions = [],
-			guides = [];
+			wordObject = [];
+
+		//temporary response, will build function to display search suggestions
+		if (toParse === undefined) return "That word doesn't seem to exist!";
 
 		toParse.forEach(function(entry) {
 			if (entry.ew[0] === word) {
-				var newDef = factory.definitionParser(entry);
-				var outline = factory.wordOutline(entry.def[0].sn);
-				if (outline) guides.push(outline);
-				definitions.push(newDef);
+				var newDef = factory.definitionParser(entry),
+					outline = factory.wordOutline(entry.def[0].sn),
+					newEntry = {};
+				if (outline) {
+					newEntry.outline = outline;
+					newEntry.definitions = newDef;
+					newEntry.defCount = newDef.length;
+					wordObject.push(newEntry);
+				}
 			}
 		})
-
-		wordObject.definitions = definitions;
-		wordObject.guides = guides;
 
 		return wordObject;
 	};
