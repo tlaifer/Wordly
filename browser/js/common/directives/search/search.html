@@ -1,14 +1,14 @@
-<div class='container-fluid' id='searchbar'>
-	<div class='xs-col-4 col-xs-offset-4'>
+<div class='row'>
+	<div class='cs-col-3'></div>
+	<div class='xs-col-6 text-center' id='searchbar'>
 		<div id='searchContainer'>
 			<p>Search Merriam Webster</p>
 			<form>
 				<input id='inputBar' type='text' ng-model='searchInput' ></input>
-				<button type='button' class='btn btn-default' id='dict' ng-click='searchDict(searchInput)'>Search Dictionary</button>
-				<button type='button' class='btn btn-default' id='thes' ng-click='searchThesaurus(searchInput)'>Search Thesauraus</button>
+				<button type='button' class='btn btn-default search-btn' ng-click='searchDict(searchInput)'>Search Dictionary</button>
+				<button type='button' class='btn btn-default search-btn' ng-click='searchThesaurus(searchInput)'>Search Thesauraus</button>
 			</form>
 		</div>
-	    <h2>Word Data:</h2>
-	    <p>{{wordData}}</p>
 	</div>
+	<div class='cs-col-3'></div>
 </div>

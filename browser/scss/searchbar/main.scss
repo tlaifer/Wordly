@@ -1,31 +1,34 @@
-#searchbar
+#searchbar {
+	margin-top: 6%;
+}
 
 #searchContainer {
 	max-width: 50%;
-	margin-top: 5%;
+	margin: 5% auto 0;
+	div {
+		text-align: justify;
+	}
+
+	div:after {
+		content: "";
+		display: inline-block;
+		width: 100%;
+	}
 	p {
-		font-size: 3vw;
+		font-size: 3.4vw;
 		font-family: 'Josefin Slab', serif;
-		color: #ffeecc;
-		font-weight: 500;
+		color: $cream;
+		font-weight: 600;
 	}
 
 	#inputBar {
-		max-width: 50%;
+		margin: 0 auto 4%;
 		display: block;
-		margin: 4% 20%;
 		padding: 2% 5%;
 	}
 	button {
 		font-family: 'Open Sans', sans-serif;
 		font-weight: 350;
-	}
-	#thes {
-		color: white;
-		background-color: #b3b3ff;
-	}
-	#dict {
-		color: white;
-		background-color: #b3b3ff;
+		margin: 1% 1%;
 	}
 }
