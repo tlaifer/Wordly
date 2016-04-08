@@ -5,10 +5,15 @@
 		border-color: white;
 		max-width: 65%;
 		p {
-			font-size: 3vw;
+			font-size: 2vw;
 			font-family: 'Open Sans', sans-serif;
 			color: $cream;
-			font-weight: 400;
+			font-weight: 100;
+		}
+		h1 {
+			font-size: 3vw;
+			font-family: 'Open Sans', sans-serif;
+			font-weight: 200;
 		}
 	}
 }

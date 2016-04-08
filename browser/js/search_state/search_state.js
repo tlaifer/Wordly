@@ -22,12 +22,12 @@ app.config(($stateProvider) => {
 				})
 	};
 
-	$scope.searchThesaurus = (word) => {
-		return addWordFactory.searchThesaurus(word)
-				.then(data => {
-					$scope.wordData = data;
-				})
-	}
+	// $scope.searchThesaurus = (word) => {
+	// 	return addWordFactory.searchThesaurus(word)
+	// 			.then(data => {
+	// 				$scope.wordData = data;
+	// 			})
+	// }
 
 	$scope.searchInput = '';
 
