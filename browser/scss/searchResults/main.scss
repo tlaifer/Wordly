@@ -1,11 +1,14 @@
 #searchResults {
+	margin: 2% auto;
 	#searchText{
+		background: darken($background-teal, 15%);
+		border-color: white;
 		max-width: 65%;
-	}
-	p {
-		font-size: 3vw;
-		font-family: 'Open Sans', sans-serif;
-		color: $cream;
-		font-weight: 400;
+		p {
+			font-size: 3vw;
+			font-family: 'Open Sans', sans-serif;
+			color: $cream;
+			font-weight: 400;
+		}
 	}
 }
