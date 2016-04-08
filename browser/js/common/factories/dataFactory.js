@@ -92,6 +92,11 @@ app.factory('dataFactory', () => {
 	factory.WordOutlineDef = (guide, defs) => {
 		var outline = {};
 		var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+		if (!guide && defs) {
+			console.log('undefined guide def: ', defs);
+			return defs;
+		}
+		else if (!guide) return undefined;
 		for (var i = 0; i < guide.length; i++) {
 			// check if definition has multiple subdefinitions
 			if (guide[i].length > 1) {
@@ -152,7 +157,7 @@ app.factory('dataFactory', () => {
 			if (entry.ew[0] === word) {
 				var newDef = factory.definitionParser(entry);
 				var result = factory.WordOutlineDef(entry.def[0].sn, newDef);
-				wordArr.push(result);			
+				if (newDef !== 'obsolete') wordArr.push(result);			
 			}
 		})
 		return wordArr;
