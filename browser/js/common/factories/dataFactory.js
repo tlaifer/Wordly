@@ -5,6 +5,8 @@ app.factory('dataFactory', () => {
 	// retrieves strings of all definitions from the mess of json returned from the backend
 	factory.definitionParser = (defObject) => {
 		var mappedDefs = [];
+		if (defObject.def[0].sl && defObject.def[0].sl.indexOf('obsolete') >= 0) return 'obsolete';
+
 		defObject.def[0].dt.forEach(function(definition){
 			if (typeof definition  === 'string') mappedDefs.push(definition);
 			else if (definition._ !== undefined && definition._.length > 2) {
@@ -66,12 +68,12 @@ app.factory('dataFactory', () => {
 
 						else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
 							go = false;
-							i = j-1;
+							i = j -1;
 						}
 					}
 				}
 			}
-			else if (guide[i].length === 1) {
+			else if (guide[i].length === 1 && nums.indexOf(guide[i]) > 0) {
 				var keyRef;
 
 				if (!outline[guide[i]]) {
@@ -87,6 +89,75 @@ app.factory('dataFactory', () => {
 		return outline;
 	};
 
+	factory.WordOutlineDef = (guide, defs) => {
+		var outline = {};
+		var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+		for (var i = 0; i < guide.length; i++) {
+			// check if definition has multiple subdefinitions
+			if (guide[i].length > 1) {
+				//create new array within the outline to hold subdefitions a, b, c....
+				var subDef = guide[i].split(' ');
+				var keyRef;
+
+				if (!outline[subDef[0]]) {
+					keyRef = subDef[0];
+					
+				}
+				else {
+					keyRef = subDef[0] + '.1';
+				}
+				
+				outline[keyRef] = [];
+				outline[keyRef].push(defs.splice(0, 1)[0]);
+
+				//loop to push all subefinitions to this array
+				var go = true;
+				for (var j = i + 1; j < guide.length; j++) {
+					if (go) {
+						if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
+							outline[keyRef].push(defs.splice(0, 1)[0]);
+						}
+
+						else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
+							go = false;
+							i = j-1;
+						}
+					}
+				}
+			}
+			else if (guide[i].length === 1) {
+				var keyRef;
+
+				if (!outline[guide[i]]) {
+					keyRef = guide[i];
+					
+				}
+				else {
+				// temporarily disabled... if the for loop encounters a new definition altogether, simply return
+				//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
+					keyRef = guide[i] + '.1';
+					// outline[keyRef] = WordOutline(guide.slice(i));
+					// return outline;
+				}
+				outline[keyRef] = defs.splice(0,1)[0];
+			}
+		}
+		return outline;
+	};
+
+	factory.getDefinitionsOne = (word, data) => {
+		var toManipulate = data.entry_list.entry,
+			wordArr = [];
+		toManipulate.forEach(function(entry) {
+			if (entry.ew[0] === word) {
+				var newDef = factory.definitionParser(entry);
+				var result = factory.WordOutlineDef(entry.def[0].sn, newDef);
+				wordArr.push(result);			
+			}
+		})
+		return wordArr;
+	};
+
 	// returns an object containing defintions arrays and respective outlines for the definitions
 	factory.wordParse = (word, data) => {
 		var toParse = data.entry_list.entry,
@@ -100,7 +171,7 @@ app.factory('dataFactory', () => {
 				var newDef = factory.definitionParser(entry),
 					outline = factory.wordOutline(entry.def[0].sn),
 					newEntry = {};
-				if (outline) {
+				if (newDef !== 'obsolete') {
 					newEntry.outline = outline;
 					newEntry.definitions = newDef;
 					newEntry.defCount = newDef.length;
