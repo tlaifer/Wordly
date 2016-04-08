@@ -154,7 +154,7 @@ app.factory('dataFactory', () => {
 		var toManipulate = data.entry_list.entry,
 			wordArr = [];
 		toManipulate.forEach(function(entry) {
-			if (entry.ew[0] === word) {
+			if (entry.ew[0].toLowerCase() === word.toLowerCase()) {
 				var newDef = factory.definitionParser(entry);
 				var result = factory.WordOutlineDef(entry.def[0].sn, newDef);
 				if (newDef !== 'obsolete') wordArr.push(result);			
