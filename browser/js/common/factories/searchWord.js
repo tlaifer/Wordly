@@ -10,7 +10,7 @@ app.factory('addWordFactory', $http => {
 		.then(response => {
 			return response.data;
 		})
-	}
+	};
 
 	factory.searchThesaurus = (word) => {
 		return $http({
@@ -20,9 +20,9 @@ app.factory('addWordFactory', $http => {
 		.then( response => {
 			return response.data;
 		})
-	}
+	};
 
 	factory.getWordData = () => wordData;
 
 	return factory;
-})
+});

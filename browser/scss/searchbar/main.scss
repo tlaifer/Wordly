@@ -3,8 +3,8 @@
 }
 
 #searchContainer {
-	max-width: 65%;
-	margin: 5% auto 0;
+	max-width: 80%;
+	margin: 0 auto;
 	div {
 		text-align: justify;
 	}
@@ -15,20 +15,25 @@
 		width: 100%;
 	}
 	p {
-		font-size: 3.4vw;
+		font-size: 3.8vw;
 		font-family: 'Josefin Slab', serif;
 		color: $cream;
 		font-weight: 600;
 	}
 
 	#inputBar {
-		margin: 0 auto 4%;
+		margin: 0 auto 2%;
 		display: block;
-		padding: 2% 5%;
+		padding: 1% .5%;
+		text-align: center;
+		font-family: 'Josefin Slab', serif;
+		font-size: 3vw;
 	}
-	button {
+	#searchButton {
 		font-family: 'Open Sans', sans-serif;
-		font-weight: 350;
+		font-weight: 400;
+		font-size: 2vw;
 		margin: 1% 1%;
+		padding: 1.5vw;
 	}
-}
+};
