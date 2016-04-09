@@ -1,9 +1,11 @@
-navbar {
-
+#stickyNav {
+  opacity: .95;
   display: block;
-  background: #ffb3b3;
+  background: $chill-ass-pink;
   border-bottom: 1px solid black;
   box-shadow: 1px 1px 14px -3px black;
+
+  font-family: 'Josefin Slab', serif;
 
   .container {
     width: 91%;
@@ -14,7 +16,6 @@ navbar {
   a {
     color: black;
     font-size: 2.4vw;
-    font-family: 'Josefin Slab', serif;
     font-weight: 500;
   }
 
@@ -33,19 +34,9 @@ navbar {
     }
   }
 
-  .login-button {
-    float: right;
-    border: 1px solid black;
-    margin-top: 10px;
-    background: none;
-    outline: none !important;
-  }
-
   .welcome {
-    font-family: 'Open Sans', sans-serif;
     font-weight: 100;
     float: right;
-    margin-top: 12px;
     span {
       color: black;
       font-size: 16px;
@@ -54,8 +45,7 @@ navbar {
     a {
       color: #00b3b3;
       cursor: pointer;
-      font-family: 'Open Sans', sans-serif;
-      font-weight: 100;
+      font-weight: 400;
     }
   }
 

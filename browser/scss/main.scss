@@ -9,6 +9,14 @@ body {
   -webkit-animation: pulsate 25s infinite alternate;
 }
 
+.search-btn {
+  color: white;
+  background-color: $btn-color;
+  border: .5vw solid;
+  border-radius: .8vw;
+  -webkit-animation: reversePulsate 25s infinite alternate;
+ }
+
 @mixin clearfix {
   &:after {
     content: "";
@@ -22,23 +30,24 @@ body {
   margin: 0 auto;
 }
 
-.search-btn {
-  	color: white;
-	background-color: $btn-color;
- }
-
  .btn-default:hover {
- 	color: lighten($btn-color, 10%);
+ 	color: $chill-ass-pink;
  	background-color: darken($btn-color, 20%);
  	border-color: $dope-pink;
  }
-
 
  @-webkit-keyframes pulsate {
        0% {background-color: lighten($background-teal, 9%);}
       33% {background-color: lighten($background-teal, 4%);}
      66% {background-color: darken($background-teal, 1%);}
      100% {background-color: darken($background-teal, 6%);}
+ }
+
+ @-webkit-keyframes reversePulsate {
+       0% {background-color: darken($background-teal, 12%);}
+      33% {background-color: darken($background-teal, 5%);}
+     66% {background-color: lighten($background-teal, 2%);}
+     100% {background-color: lighten($background-teal, 9%);}
  }
 
 @import 'directives/main';

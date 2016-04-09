@@ -1,10 +1,10 @@
 <div class='row'>
-	<div class='col-xs-6 col-xs-offset-3 text-center' id='searchbar'>
+	<div class='col-xs-8 col-xs-offset-2 text-center' id='searchbar'>
 		<div id='searchContainer'>
 			<p>Search Merriam Webster</p>
 			<form>
-				<input id='inputBar' type='text' ng-model='searchInput' ></input>
-				<button type='button' class='btn btn-default search-btn' ng-click='searchDict(searchInput)'>Search Dictionary</button>
+				<input type='text' id='inputBar' ng-model='searchInput' autocomplete='off'></input>
+				<button type='button' id='searchButton' class='btn btn-default search-btn' ng-click='searchDict(searchInput)'>Search Dictionary</button>
 			</form>
 		</div>
 	</div>

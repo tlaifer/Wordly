@@ -18,7 +18,6 @@ router.route('/dictionary/:word')
  		return request.get(path, (error, response, body) => {
  			if (!error && response.statusCode === 200) {
  				parseString(body, (err, result) => {
- 					console.log('dictionary ', result);
  					res.status(200).json(result);
  				})
  			}
@@ -31,7 +30,6 @@ router.route('/thesaurus/:word')
 		return request.get(path, (error, response, body) => {
 			if (!error && response.statusCode === 200) {
 				parseString(body, (err, result) => {
-					console.log('thesaurus ',  result);
 					res.status(200).json(result);
 				})
 			}

@@ -3,7 +3,7 @@
 	#searchText{
 		background: darken($background-teal, 15%);
 		border-color: white;
-		max-width: 65%;
+		max-width: 70%;
 		p {
 			font-size: 2vw;
 			font-family: 'Open Sans', sans-serif;
@@ -15,5 +15,8 @@
 			font-family: 'Open Sans', sans-serif;
 			font-weight: 200;
 		}
+		#searchedWord {
+			color: $chill-ass-pink;
+		}
 	}
-}
+};
