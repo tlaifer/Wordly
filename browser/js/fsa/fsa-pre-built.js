@@ -2,7 +2,7 @@
 
     'use strict';
 
-    // Hope you didn't forget Angular! Duh-doy.
+    // check for angualr
     if (!window.angular) throw new Error('I can\'t find Angular!');
 
     var app = angular.module('fsaPreBuilt', []);
@@ -128,6 +128,12 @@
             this.user = null;
         };
 
+    });
+
+    app.filter('capitalize', function() {
+        return function(input) {
+          return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+        }
     });
 
 })();

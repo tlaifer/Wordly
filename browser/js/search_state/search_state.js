@@ -8,24 +8,26 @@ app.config(($stateProvider) => {
 	})
 })
 .controller('SearchBarCtrl', ($scope, addWordFactory, dataFactory) => {
-	$scope.wordData;
+	$scope.wordData = [];
 	$scope.word;
+	$scope.searched = false;
 
 	$scope.searchDict = (word) => {
 		$scope.word = word;
 		return addWordFactory.searchDictionary(word)
 				.then(data => {
-					$scope.wordData = dataFactory.wordParse(word, data);
-					$scope.word = '';
+					console.log('data: ', data);
+					$scope.wordData = dataFactory.getDefinitionsOne(word, data);
+					$scope.searched = true;
 				})
 	};
 
-	$scope.searchThesaurus = (word) => {
-		return addWordFactory.searchThesaurus(word)
-				.then(data => {
-					$scope.wordData = data;
-				})
-	}
+	// $scope.searchThesaurus = (word) => {
+	// 	return addWordFactory.searchThesaurus(word)
+	// 			.then(data => {
+	// 				$scope.wordData = data;
+	// 			})
+	// }
 
 	$scope.searchInput = '';
 

@@ -14,7 +14,7 @@ app.controller('homeCtrl', ($scope, AuthService, $state) => {
 		$scope.error = null;
 		AuthService.login(loginCredentials)
 		.then(() => {
-			$state.go('searchbar')
+			$state.go('search')
 		})
 	}
 

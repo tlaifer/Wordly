@@ -8,7 +8,6 @@ app.factory('addWordFactory', $http => {
 			url: 'api/search/dictionary/' + word
 		})
 		.then(response => {
-			console.log('word: ', response.data);
 			return response.data;
 		})
 	}
@@ -19,7 +18,6 @@ app.factory('addWordFactory', $http => {
 			url: 'api/search/thesaurus/' + word
 		})
 		.then( response => {
-			console.log('word: ', response.data);
 			return response.data;
 		})
 	}

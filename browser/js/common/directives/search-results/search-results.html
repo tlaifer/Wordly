@@ -1,0 +1,6 @@
+<div class='row' id='searchResults' ng-repeat='wordObj in wordData'>
+	<div class='col-md-6 col-xs-offset-3 text-left' id='searchText'>
+		<h1>{{ word | capitalize }}</h1>
+		<p ng-repeat='def in wordObj'>{{$index + 1}} {{def}}</p>
+	</div>
+</div>
