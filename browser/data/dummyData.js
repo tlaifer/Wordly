@@ -4,8 +4,9 @@ var dummyDict = {"entry_list":{"$":{"version":"1.0"},"entry":[{"$":{"id":"hello"
 	wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
 //////// new and improved functions
+var dbFormat = {};
 
-function wordObjectParser (word, data) {
+dbFormat.wordObjectParser = function (word, data) {
 	var searchData = data.entry_list.entry,
 		wordId,
 		wordObjects = [];
@@ -13,40 +14,42 @@ function wordObjectParser (word, data) {
 	searchData.forEach(function(entry) {
 		wordId = entry.ew[0];
 		if (wordId === word) {
-			var definitionData = definitionGetter(entry);
+			var definitionData = dbFormat.definitionGetter(entry);
 			wordObjects.push(definitionData);
 		}
 	})
 	return wordObjects;
 }
 
-function definitionGetter (defData) {
-	var definitionArr = defData.def[0].dt,
+dbFormat.definitionGetter = function (defData) {
+	var definitionArr = defData.def[0],
 		definitionObj = {},
 		definitions = [];
-	definitionArr.forEach(function (definition, index, array){
+	definitionArr.dt.forEach(function (definition, index, array){
 		//traverse definition arrays and return all necessary definition strings
 		if (typeof definition  === 'string') {
-			definition = colonSplice(definition);
+			definition = dbFormat.colonSplice(definition);
 			definition = definition.trim();
 			definitions.push(definition);
 		}
 		else if (typeof definition === 'object') {
-			var underscoreDefArr = underscoreWordParse(definition);
+			var underscoreDefArr = dbFormat.underscoreWordParse(definition);
 			definitions = definitions.concat(underscoreDefArr);
 		}
 	});
 	//get necessary data like parts of speech, dates, pronunciation etc. 
-	
+	if (definitionArr.date !== undefined) definitionObj.date = definitionArr.date[0];
+	if (defData.fl !== undefined) definitionObj.partSpeech = defData.fl[0];
+
 	definitionObj.definitions = definitions;
 	return definitionObj;
 }
 
-function underscoreWordParse (underscoreStr) {
+dbFormat.underscoreWordParse = function (underscoreStr) {
 	var underscoreDefs = [];
 	if (underscoreStr._.length > 2) {
 		var defUnderscore = underscoreStr._;
-		defUnderscore = colonSplice(defUnderscore)
+		defUnderscore = dbFormat.colonSplice(defUnderscore)
 		defUnderscore = defUnderscore.trim();
 		underscoreDefs.push(defUnderscore);
 	}
@@ -57,7 +60,7 @@ function underscoreWordParse (underscoreStr) {
 			underscoreDefs.push(trimmedSubDef);
 		}
 		else if (typeof sxArray[0] === 'string' && sxArray.length === 1) {
-			var cleanStr = colonSplice(sxArray[0]);
+			var cleanStr = dbFormat.colonSplice(sxArray[0]);
 			underscoreDefs.push(cleanStr);
 		} 
 		else {
@@ -67,15 +70,15 @@ function underscoreWordParse (underscoreStr) {
 	return underscoreDefs;
 };
 
-function colonSplice (str) {
+dbFormat.colonSplice = function (str) {
 	while (str.indexOf(':') !== -1) {
 		var colonToSlice = str.indexOf(':');
-		str = stringSplice(str, colonToSlice, 1)
+		str = dbFormat.stringSplice(str, colonToSlice, 1)
 	}
 	return str;
 };
 
-function stringSplice(str, index, count, add) {
+dbFormat.stringSplice = function (str, index, count, add) {
   return str.slice(0, index) + (add || "") + str.slice(index + count);
 };
 
@@ -91,7 +94,7 @@ function stringSplice(str, index, count, add) {
 // 	}
 // };
 
-console.log('testing new functions: ', wordObjectParser('hit', complexDummy));
+console.log('testing new functions: ', dbFormat.wordObjectParser('hello', dummyDict));
 
 
 //////// end of new and improved functions
