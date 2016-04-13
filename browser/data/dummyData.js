@@ -37,9 +37,12 @@ dbFormat.definitionGetter = function (defData) {
 			definitions = definitions.concat(underscoreDefArr);
 		}
 	});
-	//get necessary data like parts of speech, dates, pronunciation etc. 
+	//get date info 
 	if (definitionArr.date !== undefined) definitionObj.date = definitionArr.date[0];
+	//get part of speech
 	if (defData.fl !== undefined) definitionObj.partSpeech = defData.fl[0];
+	// get outline for rendering
+	if (definitionArr.sn !== undefined) definitionObj.renderGuide = definitionArr.sn;
 
 	definitionObj.definitions = definitions;
 	return definitionObj;
@@ -99,118 +102,9 @@ console.log('testing new functions: ', dbFormat.wordObjectParser('hello', dummyD
 
 //////// end of new and improved functions
 
-function getDefinitions (word, data) {
-	var toManipulate = data.entry_list.entry,
-		wordObject = {},
-		definitions = [],
-		guides = [];
-	toManipulate.forEach(function(entry) {
-		if (entry.ew[0] === word) {
-			var newDef = definitionArrayParser(entry);
-			var outline = WordOutline(entry.def[0].sn);
-			guides.push(outline);
-			definitions.push(newDef);
-		}
-	})
-	wordObject.definitions = definitions;
-	wordObject.guides = guides;
-	return wordObject;
-};
-
-function definitionArrayParser (defObject){
-	var mappedDefs = [];
-	defObject.def[0].dt.forEach(function(definition){
-		if (typeof definition  === 'string') {
-			if (definition[0] === ':') definition = definition.slice(1);
-			mappedDefs.push(definition);
-		}
-		else if (definition._.length > 2) {
-			var defStr = definition._;
-			//some of merrriam webster subdefinitions are stored as values to the '_' key
-			//furthermore, some of these subdefinition strings end with a colon (": ") in order to display examples
-			//this if statement checks and deletes the colon before trimming the string
-			if (defStr[defStr.length-1] === ':') {
-				defStr = defStr.slice(0, -1);
-			}
-			if (defStr[0] === ':') defStr = defStr.slice(1);
-			defStr = defStr.trim();
-			mappedDefs.push(defStr);
-		}
-		else if (definition._.length <= 2) {
-			if (typeof definition.sx[0] === 'string') {
-				if (definition.sx.length === 1) mappedDefs.push(definition.sx[0]);
-				else  mappedDefs.push(definition.sx.join(', '));
-			}
-			else if (typeof definition.sx[0] === 'object') {
-				var trimmedSubDef = definition.sx[0]._.trim();
-				mappedDefs.push(trimmedSubDef);
-			}
-		}
-	})
-	return mappedDefs;
-}
-
-function WordOutline (guide) {
-	var outline = {};
-	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-	for (var i = 0; i < guide.length; i++) {
-		// check if definition has multiple subdefinitions
-		if (guide[i].length > 1) {
-			//create new array within the outline to hold subdefitions a, b, c....
-			var subDef = guide[i].split(' ');
-			var keyReference;
-
-			if (!outline[subDef[0]]) {
-				keyRef = subDef[0];
-				
-			}
-			else {
-				keyRef = subDef[0] + '.1';
-			}
-			
-			outline[keyRef] = [];
-			outline[keyRef].push(subDef[1]);
-
-			//loop to push all subefinitions to this array
-			var go = true;
-			for (var j = i + 1; j < guide.length; j++) {
-				if (go) {
-					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
-						outline[keyRef].push(guide[j]);
-					}
-
-					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
-						go = false;
-						i = j-1;
-					}
-				}
-			}
-		}
-		else if (guide[i].length === 1) {
-			var keyReference;
-
-			if (!outline[guide[i]]) {
-				keyRef = guide[i];
-				
-			}
-			else {
-			// temporarily disabled... if the for loop encounters a new definition altogether, simply return
-			//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
-				keyRef = guide[i] + '.1';
-				// outline[keyRef] = WordOutline(guide.slice(i));
-				// return outline;
-			}
-
-			outline[keyRef] = keyRef;
-		}
-	}
-	return outline;
-}
-
 function WordOutlineDef (guide, defs) {
-	var outline = {};
-	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	var outline = {},
+	 	nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	for (var i = 0; i < guide.length; i++) {
 		// check if definition has multiple subdefinitions
 		if (guide[i].length > 1) {
@@ -220,43 +114,41 @@ function WordOutlineDef (guide, defs) {
 
 			if (!outline[subDef[0]]) {
 				keyRef = subDef[0];
-				
-			}
-			else {
-				keyRef = subDef[0] + '.1';
-			}
-			
-			outline[keyRef] = [];
-			outline[keyRef].push(defs.splice(0, 1)[0]);
+				outline[keyRef] = [];
+				outline[keyRef].push(defs.splice(0, 1)[0]);
 
-			//loop to push all subefinitions to this array
-			var go = true;
-			for (var j = i + 1; j < guide.length; j++) {
-				if (go) {
-					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
-						outline[keyRef].push(defs.splice(0, 1)[0]);
-					}
+				//loop to push all subefinitions to this array
+				var go = true;
+				for (var j = i + 1; j < guide.length; j++) {
+					if (go) {
+						if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
+							outline[keyRef].push(defs.splice(0, 1)[0]);
+						}
 
-					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
-						go = false;
-						i = j-1;
+						else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
+							go = false;
+							i = j-1;
+						}
 					}
 				}
+			}
+			// if the outline object already has a key value pair, return an array of two outline objects
+			else {
+				var returnArray = [outline];
+				returnArray.push(WordOutlineDef(guide.slice(i), defs));
+				return returnArray;
 			}
 		}
 		else if (guide[i].length === 1) {
 			var keyRef;
-
 			if (!outline[guide[i]]) {
-				keyRef = guide[i];
-				
+				keyRef = guide[i];	
 			}
 			else {
-			// temporarily disabled... if the for loop encounters a new definition altogether, simply return
-			//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
-				keyRef = guide[i] + '.1';
-				// outline[keyRef] = WordOutline(guide.slice(i));
-				// return outline;
+			// if the outline object already has a key value pair, return an array of two outline objects
+				var returnArray = [outline];
+				returnArray.push(WordOutlineDef(guide.slice(i), defs));
+				return returnArray;
 			}
 			outline[keyRef] = defs.splice(0,1)[0];
 		}
@@ -269,9 +161,9 @@ function getDefinitionsOne (word, data) {
 		wordArr = [];
 	toManipulate.forEach(function(entry) {
 		if (entry.ew[0] === word) {
-			var newDef = definitionArrayParser(entry);
-			var result = WordOutlineDef(entry.def[0].sn, newDef);
-			wordArr.push(result);			
+			var newDef = dbFormat.definitionGetter(entry);
+			var result = WordOutlineDef(entry.def[0].sn, newDef.definitions);
+			wordArr = wordArr.concat(result);			
 		}
 	})
 	return wordArr;
