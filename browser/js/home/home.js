@@ -4,7 +4,7 @@ app.config(($stateProvider) => {
 		templateUrl: 'js/home/home.html',
 		controller: 'homeCtrl'
 	})
-})
+});
 
 app.controller('homeCtrl', ($scope, AuthService, $state) => {
 	$scope.login = {};
@@ -18,4 +18,4 @@ app.controller('homeCtrl', ($scope, AuthService, $state) => {
 		})
 	}
 
-})
+});

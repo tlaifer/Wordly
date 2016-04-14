@@ -3,4 +3,4 @@ app.directive('login', (AuthService, $state) => {
 		restrict: 'E',
 		templateUrl: '/js/common/directives/login/login_template.html'
 	}
-})
+});

@@ -4,8 +4,9 @@ var dummyDict = {"entry_list":{"$":{"version":"1.0"},"entry":[{"$":{"id":"hello"
 	wordRef = ["1 a","b","c","2 a","b","c","3","4","5","6 a","b","c","d","e","f","g","7","8","1 a","b","2 a","b","c","d","3","4","5"];
 
 //////// new and improved functions
+var dbFormat = {};
 
-function wordObjectParser (word, data) {
+dbFormat.wordObjectParser = function (word, data) {
 	var searchData = data.entry_list.entry,
 		wordId,
 		wordObjects = [];
@@ -13,40 +14,45 @@ function wordObjectParser (word, data) {
 	searchData.forEach(function(entry) {
 		wordId = entry.ew[0];
 		if (wordId === word) {
-			var definitionData = definitionGetter(entry);
+			var definitionData = dbFormat.definitionGetter(entry);
 			wordObjects.push(definitionData);
 		}
 	})
 	return wordObjects;
 }
 
-function definitionGetter (defData) {
-	var definitionArr = defData.def[0].dt,
+dbFormat.definitionGetter = function (defData) {
+	var definitionArr = defData.def[0],
 		definitionObj = {},
 		definitions = [];
-	definitionArr.forEach(function (definition, index, array){
+	definitionArr.dt.forEach(function (definition, index, array){
 		//traverse definition arrays and return all necessary definition strings
 		if (typeof definition  === 'string') {
-			definition = colonSplice(definition);
+			definition = dbFormat.colonSplice(definition);
 			definition = definition.trim();
 			definitions.push(definition);
 		}
 		else if (typeof definition === 'object') {
-			var underscoreDefArr = underscoreWordParse(definition);
+			var underscoreDefArr = dbFormat.underscoreWordParse(definition);
 			definitions = definitions.concat(underscoreDefArr);
 		}
 	});
-	//get necessary data like parts of speech, dates, pronunciation etc. 
-	
+	//get date info 
+	if (definitionArr.date !== undefined) definitionObj.date = definitionArr.date[0];
+	//get part of speech
+	if (defData.fl !== undefined) definitionObj.partSpeech = defData.fl[0];
+	// get outline for rendering
+	if (definitionArr.sn !== undefined) definitionObj.renderGuide = definitionArr.sn;
+
 	definitionObj.definitions = definitions;
 	return definitionObj;
 }
 
-function underscoreWordParse (underscoreStr) {
+dbFormat.underscoreWordParse = function (underscoreStr) {
 	var underscoreDefs = [];
 	if (underscoreStr._.length > 2) {
 		var defUnderscore = underscoreStr._;
-		defUnderscore = colonSplice(defUnderscore)
+		defUnderscore = dbFormat.colonSplice(defUnderscore)
 		defUnderscore = defUnderscore.trim();
 		underscoreDefs.push(defUnderscore);
 	}
@@ -57,7 +63,7 @@ function underscoreWordParse (underscoreStr) {
 			underscoreDefs.push(trimmedSubDef);
 		}
 		else if (typeof sxArray[0] === 'string' && sxArray.length === 1) {
-			var cleanStr = colonSplice(sxArray[0]);
+			var cleanStr = dbFormat.colonSplice(sxArray[0]);
 			underscoreDefs.push(cleanStr);
 		} 
 		else {
@@ -67,15 +73,15 @@ function underscoreWordParse (underscoreStr) {
 	return underscoreDefs;
 };
 
-function colonSplice (str) {
+dbFormat.colonSplice = function (str) {
 	while (str.indexOf(':') !== -1) {
 		var colonToSlice = str.indexOf(':');
-		str = stringSplice(str, colonToSlice, 1)
+		str = dbFormat.stringSplice(str, colonToSlice, 1)
 	}
 	return str;
 };
 
-function stringSplice(str, index, count, add) {
+dbFormat.stringSplice = function (str, index, count, add) {
   return str.slice(0, index) + (add || "") + str.slice(index + count);
 };
 
@@ -91,123 +97,14 @@ function stringSplice(str, index, count, add) {
 // 	}
 // };
 
-console.log('testing new functions: ', wordObjectParser('hit', complexDummy));
+console.log('testing new functions: ', dbFormat.wordObjectParser('hello', dummyDict));
 
 
 //////// end of new and improved functions
 
-function getDefinitions (word, data) {
-	var toManipulate = data.entry_list.entry,
-		wordObject = {},
-		definitions = [],
-		guides = [];
-	toManipulate.forEach(function(entry) {
-		if (entry.ew[0] === word) {
-			var newDef = definitionArrayParser(entry);
-			var outline = WordOutline(entry.def[0].sn);
-			guides.push(outline);
-			definitions.push(newDef);
-		}
-	})
-	wordObject.definitions = definitions;
-	wordObject.guides = guides;
-	return wordObject;
-};
-
-function definitionArrayParser (defObject){
-	var mappedDefs = [];
-	defObject.def[0].dt.forEach(function(definition){
-		if (typeof definition  === 'string') {
-			if (definition[0] === ':') definition = definition.slice(1);
-			mappedDefs.push(definition);
-		}
-		else if (definition._.length > 2) {
-			var defStr = definition._;
-			//some of merrriam webster subdefinitions are stored as values to the '_' key
-			//furthermore, some of these subdefinition strings end with a colon (": ") in order to display examples
-			//this if statement checks and deletes the colon before trimming the string
-			if (defStr[defStr.length-1] === ':') {
-				defStr = defStr.slice(0, -1);
-			}
-			if (defStr[0] === ':') defStr = defStr.slice(1);
-			defStr = defStr.trim();
-			mappedDefs.push(defStr);
-		}
-		else if (definition._.length <= 2) {
-			if (typeof definition.sx[0] === 'string') {
-				if (definition.sx.length === 1) mappedDefs.push(definition.sx[0]);
-				else  mappedDefs.push(definition.sx.join(', '));
-			}
-			else if (typeof definition.sx[0] === 'object') {
-				var trimmedSubDef = definition.sx[0]._.trim();
-				mappedDefs.push(trimmedSubDef);
-			}
-		}
-	})
-	return mappedDefs;
-}
-
-function WordOutline (guide) {
-	var outline = {};
-	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-	for (var i = 0; i < guide.length; i++) {
-		// check if definition has multiple subdefinitions
-		if (guide[i].length > 1) {
-			//create new array within the outline to hold subdefitions a, b, c....
-			var subDef = guide[i].split(' ');
-			var keyReference;
-
-			if (!outline[subDef[0]]) {
-				keyRef = subDef[0];
-				
-			}
-			else {
-				keyRef = subDef[0] + '.1';
-			}
-			
-			outline[keyRef] = [];
-			outline[keyRef].push(subDef[1]);
-
-			//loop to push all subefinitions to this array
-			var go = true;
-			for (var j = i + 1; j < guide.length; j++) {
-				if (go) {
-					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
-						outline[keyRef].push(guide[j]);
-					}
-
-					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
-						go = false;
-						i = j-1;
-					}
-				}
-			}
-		}
-		else if (guide[i].length === 1) {
-			var keyReference;
-
-			if (!outline[guide[i]]) {
-				keyRef = guide[i];
-				
-			}
-			else {
-			// temporarily disabled... if the for loop encounters a new definition altogether, simply return
-			//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
-				keyRef = guide[i] + '.1';
-				// outline[keyRef] = WordOutline(guide.slice(i));
-				// return outline;
-			}
-
-			outline[keyRef] = keyRef;
-		}
-	}
-	return outline;
-}
-
 function WordOutlineDef (guide, defs) {
-	var outline = {};
-	var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	var outline = {},
+	 	nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	for (var i = 0; i < guide.length; i++) {
 		// check if definition has multiple subdefinitions
 		if (guide[i].length > 1) {
@@ -217,43 +114,41 @@ function WordOutlineDef (guide, defs) {
 
 			if (!outline[subDef[0]]) {
 				keyRef = subDef[0];
-				
-			}
-			else {
-				keyRef = subDef[0] + '.1';
-			}
-			
-			outline[keyRef] = [];
-			outline[keyRef].push(defs.splice(0, 1)[0]);
+				outline[keyRef] = [];
+				outline[keyRef].push(defs.splice(0, 1)[0]);
 
-			//loop to push all subefinitions to this array
-			var go = true;
-			for (var j = i + 1; j < guide.length; j++) {
-				if (go) {
-					if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
-						outline[keyRef].push(defs.splice(0, 1)[0]);
-					}
+				//loop to push all subefinitions to this array
+				var go = true;
+				for (var j = i + 1; j < guide.length; j++) {
+					if (go) {
+						if (guide[j].length === 1 && nums.indexOf(guide[j]) < 0) {
+							outline[keyRef].push(defs.splice(0, 1)[0]);
+						}
 
-					else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
-						go = false;
-						i = j-1;
+						else if (guide[j].length !== 1 || nums.indexOf(guide[j]) > -1) {
+							go = false;
+							i = j-1;
+						}
 					}
 				}
+			}
+			// if the outline object already has a key value pair, return an array of two outline objects
+			else {
+				var returnArray = [outline];
+				returnArray.push(WordOutlineDef(guide.slice(i), defs));
+				return returnArray;
 			}
 		}
 		else if (guide[i].length === 1) {
 			var keyRef;
-
 			if (!outline[guide[i]]) {
-				keyRef = guide[i];
-				
+				keyRef = guide[i];	
 			}
 			else {
-			// temporarily disabled... if the for loop encounters a new definition altogether, simply return
-			//Once basic rendering is figured out, the outline and fullRender functions will be reworked to accomodate distinct definitions
-				keyRef = guide[i] + '.1';
-				// outline[keyRef] = WordOutline(guide.slice(i));
-				// return outline;
+			// if the outline object already has a key value pair, return an array of two outline objects
+				var returnArray = [outline];
+				returnArray.push(WordOutlineDef(guide.slice(i), defs));
+				return returnArray;
 			}
 			outline[keyRef] = defs.splice(0,1)[0];
 		}
@@ -266,9 +161,9 @@ function getDefinitionsOne (word, data) {
 		wordArr = [];
 	toManipulate.forEach(function(entry) {
 		if (entry.ew[0] === word) {
-			var newDef = definitionArrayParser(entry);
-			var result = WordOutlineDef(entry.def[0].sn, newDef);
-			wordArr.push(result);			
+			var newDef = dbFormat.definitionGetter(entry);
+			var result = WordOutlineDef(entry.def[0].sn, newDef.definitions);
+			wordArr = wordArr.concat(result);			
 		}
 	})
 	return wordArr;
