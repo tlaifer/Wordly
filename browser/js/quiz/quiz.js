@@ -3,4 +3,4 @@ app.config( function($stateProvider) {
 		url: '/quiz',
 		templateUrl: 'js/quiz/quiz.html'
 	})
-})
+});

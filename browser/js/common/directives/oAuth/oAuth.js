@@ -7,4 +7,4 @@ app.directive('oauth', () => {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/oAuth/oAuth.html'
 	}
-})
+});

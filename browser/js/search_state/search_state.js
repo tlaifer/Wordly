@@ -9,6 +9,7 @@ app.config(($stateProvider) => {
 })
 .controller('SearchBarCtrl', ($scope, addWordFactory, dataFactory) => {
 	$scope.wordData = [];
+	$scope.renderWord = [];
 	$scope.word;
 	$scope.searched = false;
 
@@ -19,10 +20,11 @@ app.config(($stateProvider) => {
 		return addWordFactory.searchDictionary(word)
 				.then(data => {
 					console.log('data: ', data);
-					$scope.wordData = dataFactory.getDefinitionsOne(word, data);
+					$scope.wordData = dataFactory.wordObjectParser(word, data);
 					$scope.searched = true;
 					console.log('defs', $scope.wordData);
-				})
+					return data;
+				});
 	};
 
 	// $scope.searchThesaurus = (word) => {

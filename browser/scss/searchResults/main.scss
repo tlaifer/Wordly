@@ -9,14 +9,36 @@
 			font-family: 'Open Sans', sans-serif;
 			color: $cream;
 			font-weight: 100;
-		}
-		h1 {
-			font-size: 3vw;
-			font-family: 'Open Sans', sans-serif;
-			font-weight: 200;
+			display: inline;
 		}
 		#searchedWord {
+			font-size: 4vw;
+			font-family: 'Open Sans', sans-serif;
+			font-weight: 200;
 			color: $chill-ass-pink;
+		}
+		.wordData {
+			font-weight: 90;
+			font-size: 2vw;
+			color: lighten($background-teal, 45%);
+			font-family: 'Josefin Slab', serif;
+			padding-left: 1vw;
+		}
+		#definitionData {
+			#definitionText {
+				font-size: 2vw;
+				font-family: 'Open Sans', sans-serif;
+				font-weight: 100;
+				display: inline;
+				padding-left: 1.2vw;
+			}
+			#indexNum {
+				font-size: 3.5vw;
+				color: lighten($background-teal, 15%);
+				display: inline;
+				font-family: 'Josefin Slab', serif;
+				font-weight: 500;
+			}
 		}
 	}
 };

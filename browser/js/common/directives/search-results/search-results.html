@@ -1,6 +1,13 @@
 <div class='row' id='searchResults' ng-repeat='wordObj in wordData'>
 	<div class='col-xs-8 col-xs-offset-2 text-left' id='searchText'>
-		<h1 id='searchedWord'>{{ word | capitalize }}</h1>
-		<p ng-repeat='def in wordObj'>{{$index + 1}} {{def}}</p>
+		<div>
+			<p id='searchedWord'>{{ word | capitalize }}</p>
+			<p class='wordData'>| {{ wordObj.partSpeech }} |</p>
+			<p class='wordData'>{{ wordObj.date }}</p>
+		</div>
+		<div id='definitionData' ng-repeat='definition in wordObj.definitions'>
+			<p id='indexNum'>{{$index + 1}}:</p>
+			<p id='definitionText'>{{definition}}</p>
+		</div>
 	</div>
 </div>
