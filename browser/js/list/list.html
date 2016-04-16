@@ -1,0 +1,10 @@
+<div class='text-center'>
+	<navbar></navbar>
+	<h1>Your Lists</h1>
+	<p>{{user}}</p>
+	<p>{{ listName }}</p>
+	<form>
+		<input type='text' ng-model='listName'></input>
+		<button type='btn btn-default' ng-click='createList(listName)'>Create New List</button>
+	</form>
+</div>
