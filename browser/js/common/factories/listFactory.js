@@ -1,11 +1,14 @@
 app.factory('listFactory', ($http)=>{
 	let factory = {};
 
-	factory.createList = (name) => {
+	factory.createList = (listObj) => {
 			return $http({
 				method: 'POST',
 				url: '/api/list',
-				data: {title: name}
+				data: {
+					creator: listObj.creator,
+					title: listObj.title
+				}
 			})
 			.then(response => {
 				console.log('we have received the list: ', response.data);

@@ -13,10 +13,19 @@ app.config( function ($stateProvider) {
 					});
 			}
 		},
-		controller($scope, user, listFactory){
+		controller($scope, user, listFactory, $state){
 			$scope.user = user;
-			$scope.listName;
-			$scope.createList = listFactory.createList;
+			$scope.newList = {
+				creator: user._id,
+				title: null
+			};
+
+			$scope.createList = (list) => {
+				listFactory.createList(list)
+					.then((list) => {
+
+					});
+			};
 		}
 	});
 });
