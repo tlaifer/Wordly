@@ -17,7 +17,9 @@
                 </li>
             </ul>
         </div>
-        <button ng-show="!user" ui-sref="home" class="btn login-button">Login</button>
+        <div class='welcome'>
+            <a ng-show="!user" ui-sref="login">Login</a>
+        </div>
         <div ng-show="user" class="welcome">
             <a ng-click="logout()">Logout</a>
         </div>
