@@ -52,9 +52,9 @@ module.exports = function (app) {
     }));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', { failureRedirect: '/' }),
+        passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
-            res.redirect('/search');
+            res.redirect('/');
         });
 
 };

@@ -19,12 +19,13 @@ var schema = new mongoose.Schema({
     salt: {
         type: String
     },
-    facebook: {
-        id: String
-    },
     google: {
         id: String
-    }
+    },
+    lists: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'List'
+    }]
 });
 
 // method to remove sensitive information from user objects before sending them out

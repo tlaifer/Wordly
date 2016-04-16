@@ -6,17 +6,10 @@ var schema = new mongoose.Schema({
 		type: String, 
 		required: true
 	},
-	definition: {
-		type: [String],
-		required: true
-	},
-	partOfSpeech: {
-		type: String,
-		required: true
-	},
-	date: {
-		type: String
-	}
+	definitions: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'definitionData'
+	}]
 });
 
 mongoose.model('Word', schema);

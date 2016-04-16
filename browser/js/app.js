@@ -5,7 +5,7 @@ app.config(function ($urlRouterProvider, $locationProvider, $httpProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
-    $urlRouterProvider.otherwise('/search');
+    $urlRouterProvider.otherwise('/');
 
     $urlRouterProvider.when('/auth/:serviceProvider', function(){
         window.location.reload();
@@ -46,7 +46,7 @@ app.run(function ($rootScope, AuthService, $state) {
             if (user) {
                 $state.go(toState.name, toParams);
             } else {
-                $state.go('home');
+                $state.go('login');
             }
         });
 
